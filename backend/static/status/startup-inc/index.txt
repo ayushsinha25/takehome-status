@@ -1,0 +1,161 @@
+1:"$Sreact.fragment"
+2:I[76052,["40","static/chunks/40-489360a0d4b8cc4c.js","177","static/chunks/app/layout-b40e4296b0ac2521.js"],"AuthProvider"]
+3:I[87555,[],""]
+4:I[31295,[],""]
+5:I[56671,["40","static/chunks/40-489360a0d4b8cc4c.js","177","static/chunks/app/layout-b40e4296b0ac2521.js"],"Toaster"]
+7:I[59665,[],"OutletBoundary"]
+9:I[74911,[],"AsyncMetadataOutlet"]
+b:I[59665,[],"ViewportBoundary"]
+d:I[59665,[],"MetadataBoundary"]
+e:"$Sreact.suspense"
+10:I[28393,[],""]
+:HL["/_next/static/css/bf768dfa1185a1a5.css","style"]
+0:{"P":null,"b":"gC_da28hO-JTJmSGOk8Mp","p":"","c":["","status","startup-inc",""],"i":false,"f":[[["",{"children":["status",{"children":[["slug","startup-inc","d"],{"children":["__PAGE__",{}]}]}]},"$undefined","$undefined",true],["",["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/bf768dfa1185a1a5.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],["$","html",null,{"lang":"en","children":["$","body",null,{"className":"__className_e8ce0c","children":["$","$L2",null,{"children":[["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}],["$","$L5",null,{"position":"top-right","richColors":true}]]}]}]}]]}],{"children":["status",["$","$1","c",{"children":[null,["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["slug","startup-inc","d"],["$","$1","c",{"children":[null,["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":["__PAGE__",["$","$1","c",{"children":["$L6",null,["$","$L7",null,{"children":["$L8",["$","$L9",null,{"promise":"$@a"}]]}]]}],{},null,false]},null,false]},null,false]},null,false],["$","$1","h",{"children":[null,[["$","$Lb",null,{"children":"$Lc"}],null],["$","$Ld",null,{"children":["$","div",null,{"hidden":true,"children":["$","$e",null,{"fallback":null,"children":"$Lf"}]}]}]]}],false]],"m":"$undefined","G":["$10",[]],"s":false,"S":true}
+11:T1e28,
+            (function() {
+              const slug = 'startup-inc';
+              const API_BASE_URL = window.location.origin;
+              
+              async function loadStatus() {
+                try {
+                  const response = await fetch(API_BASE_URL + '/api/v1/status/public/' + slug);
+                  const data = await response.json();
+                  
+                  if (response.ok) {
+                    // Replace the loading content with actual status
+                    document.querySelector('#__next').innerHTML = renderStatusPage(data, slug);
+                  } else {
+                    document.querySelector('#__next').innerHTML = renderErrorPage(slug);
+                  }
+                } catch (error) {
+                  console.error('Failed to load status:', error);
+                  document.querySelector('#__next').innerHTML = renderErrorPage(slug);
+                }
+              }
+              
+              function renderStatusPage(data, slug) {
+                const { organization, services, overall_status, uptime_percentage } = data;
+                
+                return `
+                  <div class="min-h-screen bg-gray-50">
+                    <div class="bg-white border-b">
+                      <div class="max-w-4xl mx-auto px-4 py-6">
+                        <div class="flex items-center space-x-3">
+                          <div class="h-8 w-8 bg-blue-600 rounded flex items-center justify-center">
+                            <svg class="h-5 w-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                              <path d="M4 4a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2H4zm2 3a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm0 3a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1z"/>
+                            </svg>
+                          </div>
+                          <div>
+                            <h1 class="text-2xl font-bold text-gray-900">${organization?.name || slug} Status</h1>
+                            <p class="text-gray-600">Current system status and uptime information</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="max-w-4xl mx-auto px-4 py-8 space-y-6">
+                      <!-- Overall Status -->
+                      <div class="bg-white rounded-lg shadow">
+                        <div class="p-6">
+                          <h2 class="text-lg font-semibold mb-4 flex items-center">
+                            <div class="w-3 h-3 rounded-full ${getStatusColor(overall_status)} mr-2"></div>
+                            System Status
+                          </h2>
+                          <div class="flex items-center justify-between">
+                            <span class="text-lg font-medium">${getStatusText(overall_status)}</span>
+                            ${uptime_percentage ? `<span class="text-sm bg-gray-100 px-2 py-1 rounded">${uptime_percentage.toFixed(2)}% uptime (30 days)</span>` : ''}
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <!-- Services -->
+                      <div class="space-y-4">
+                        <h2 class="text-xl font-semibold text-gray-900">Services</h2>
+                        ${services && services.length > 0 ? services.map(service => `
+                          <div class="bg-white rounded-lg shadow p-4">
+                            <div class="flex items-center justify-between">
+                              <div class="flex items-center space-x-3">
+                                <div class="w-3 h-3 rounded-full ${getStatusColor(service.status)}"></div>
+                                <div>
+                                  <h3 class="font-medium text-gray-900">${service.name}</h3>
+                                  ${service.description ? `<p class="text-sm text-gray-600">${service.description}</p>` : ''}
+                                </div>
+                              </div>
+                              <div class="text-right">
+                                <span class="inline-block px-2 py-1 text-xs font-medium rounded ${service.status === 'operational' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">
+                                  ${getStatusText(service.status)}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        `).join('') : '<div class="bg-white rounded-lg shadow p-6 text-center text-gray-600">No services to display</div>'}
+                      </div>
+                      
+                      <!-- Footer -->
+                      <div class="text-center pt-8 pb-4">
+                        <p class="text-sm text-gray-500">
+                          Status page powered by Status Monitor • Last updated: ${new Date().toLocaleString()}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                `;
+              }
+              
+              function renderErrorPage(slug) {
+                return `
+                  <div class="min-h-screen bg-gray-50 flex items-center justify-center">
+                    <div class="text-center max-w-md mx-auto p-6">
+                      <div class="h-16 w-16 bg-gray-400 rounded mx-auto mb-4 flex items-center justify-center">
+                        <svg class="h-8 w-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                          <path d="M4 4a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2H4zm2 3a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm0 3a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1z"/>
+                        </svg>
+                      </div>
+                      <h1 class="text-2xl font-bold text-gray-900 mb-2">Status Page Not Found</h1>
+                      <p class="text-gray-600 mb-6">
+                        The status page for "${slug}" doesn't exist or is currently unavailable.
+                      </p>
+                      <div class="text-sm text-gray-500">
+                        <p>Organization: <code class="bg-gray-100 px-2 py-1 rounded">${slug}</code></p>
+                      </div>
+                    </div>
+                  </div>
+                `;
+              }
+              
+              function getStatusColor(status) {
+                switch (status) {
+                  case 'operational': return 'bg-green-500';
+                  case 'degraded_performance': return 'bg-yellow-500';
+                  case 'partial_outage': return 'bg-orange-500';
+                  case 'major_outage': return 'bg-red-500';
+                  case 'maintenance': return 'bg-blue-500';
+                  default: return 'bg-gray-500';
+                }
+              }
+              
+              function getStatusText(status) {
+                switch (status) {
+                  case 'operational': return 'Operational';
+                  case 'degraded_performance': return 'Degraded Performance';
+                  case 'partial_outage': return 'Partial Outage';
+                  case 'major_outage': return 'Major Outage';
+                  case 'maintenance': return 'Under Maintenance';
+                  default: return 'Unknown';
+                }
+              }
+              
+              // Load status when page loads
+              if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', loadStatus);
+              } else {
+                loadStatus();
+              }
+            })();
+          6:["$","html",null,{"children":[["$","head",null,{"children":[["$","title",null,{"children":["startup-inc"," Status Page"]}],["$","meta",null,{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","link",null,{"rel":"stylesheet","href":"/_next/static/css/104226aaee078494.css"}]]}],["$","body",null,{"children":[["$","div",null,{"id":"__next","children":["$","div",null,{"className":"min-h-screen bg-gray-50","children":[["$","div",null,{"className":"bg-white border-b","children":["$","div",null,{"className":"max-w-4xl mx-auto px-4 py-6","children":["$","div",null,{"className":"flex items-center space-x-3","children":[["$","div",null,{"className":"h-8 w-8 bg-blue-600 rounded"}],["$","div",null,{"children":[["$","h1",null,{"className":"text-2xl font-bold text-gray-900","children":["startup-inc"," Status"]}],["$","p",null,{"className":"text-gray-600","children":"Current system status and uptime information"}]]}]]}]}]}],["$","div",null,{"className":"max-w-4xl mx-auto px-4 py-8","children":["$","div",null,{"className":"bg-white rounded-lg shadow p-6","children":["$","div",null,{"className":"text-center","children":[["$","div",null,{"className":"animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"}],["$","p",null,{"className":"text-gray-600","children":["Loading ","startup-inc"," status..."]}]]}]}]}]]}]}],["$","script",null,{"dangerouslySetInnerHTML":{"__html":"$11"}}]]}]]}]
+c:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+8:null
+12:I[38175,[],"IconMark"]
+a:{"metadata":[["$","title","0",{"children":"Status Page"}],["$","meta","1",{"name":"description","content":"Monitor and communicate service status effectively"}],["$","link","2",{"rel":"icon","href":"/favicon.ico","type":"image/x-icon","sizes":"16x16"}],["$","$L12","3",{}]],"error":null,"digest":"$undefined"}
+f:"$a:metadata"
