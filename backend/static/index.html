@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Status Page - Loading...</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; 
+               text-align: center; margin-top: 100px; background: #f8f9fa; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .loading { color: #6c757d; }
+        .api-link { margin-top: 20px; }
+        .api-link a { color: #007bff; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Status Page Application</h1>
+        <p class="loading">🚀 Backend is running successfully!</p>
+        <p>Frontend is loading... If this page persists, the frontend build may still be in progress.</p>
+        <div class="api-link">
+            <p>Access the API documentation: <a href="/docs">API Docs</a></p>
+            <p>API Status: <a href="/api">Health Check</a></p>
+        </div>
+    </div>
+    <script>
+        // Auto-refresh every 10 seconds to check if frontend is ready
+        setTimeout(() => window.location.reload(), 10000);
+    </script>
+</body>
+</html>
