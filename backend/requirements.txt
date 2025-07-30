@@ -18,9 +18,9 @@ websockets==12.0
 # Testing
 requests==2.31.0
 
-# Data validation (using compatible versions)
-pydantic==2.4.2
-pydantic-settings==2.0.3
+# Data validation (pydantic v1)
+pydantic==1.10.13
+email-validator==2.1.0
 
 # HTTP client
 httpx==0.25.2
