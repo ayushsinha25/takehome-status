@@ -10,6 +10,10 @@ DATABASE_URL = config(
     default="sqlite:///./status_page.db"  # Safe fallback for development
 )
 
+# Fix Heroku postgres:// URL to postgresql:// for SQLAlchemy 2.0+
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+
 # Create engine
 engine = create_engine(DATABASE_URL)
 
