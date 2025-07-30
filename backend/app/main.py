@@ -7,9 +7,9 @@ import os
 from contextlib import asynccontextmanager
 from typing import List
 
-from app.core.database import engine, Base
-from app.api.v1.router import api_router
-from app.core.websocket_manager import ConnectionManager
+from backend.app.core.database import engine, Base
+from backend.app.api.v1.router import api_router
+from backend.app.core.websocket_manager import ConnectionManager
 
 # Create database tables
 @asynccontextmanager

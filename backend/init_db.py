@@ -11,12 +11,12 @@ from datetime import datetime, timedelta
 # Add the app directory to Python path
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from app.core.database import engine, Base, SessionLocal
-from app.models.user import User, OrganizationMember, UserRole
-from app.models.organization import Organization
-from app.models.service import Service, ServiceStatus, ServiceStatusHistory
-from app.models.incident import Incident, IncidentStatus, IncidentSeverity, IncidentUpdate
-from app.core.auth import get_password_hash
+from backend.app.core.database import engine, Base, SessionLocal
+from backend.app.models.user import User, OrganizationMember, UserRole
+from backend.app.models.organization import Organization
+from backend.app.models.service import Service, ServiceStatus, ServiceStatusHistory
+from backend.app.models.incident import Incident, IncidentStatus, IncidentSeverity, IncidentUpdate
+from backend.app.core.auth import get_password_hash
 
 def init_database():
     """Initialize database tables"""

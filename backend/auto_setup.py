@@ -20,10 +20,10 @@ if not os.environ.get('DATABASE_URL') and not os.path.exists('.env'):
     print("   # Then edit .env with your actual PostgreSQL credentials")
     sys.exit(1)
 
-from app.core.database import engine, Base, get_db
-from app.core.auth import get_password_hash
-from app.models.user import User, OrganizationMember, UserRole, MembershipStatus
-from app.models.organization import Organization
+from backend.app.core.database import engine, Base, get_db
+from backend.app.core.auth import get_password_hash
+from backend.app.models.user import User, OrganizationMember, UserRole, MembershipStatus
+from backend.app.models.organization import Organization
 
 def create_database():
     """Create PostgreSQL database if it doesn't exist"""

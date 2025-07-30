@@ -5,11 +5,11 @@ from datetime import datetime, timedelta, timezone
 from typing import List, Dict
 from pydantic import BaseModel
 
-from app.core.database import get_db
-from app.core.auth import get_current_user
-from app.models.user import User, OrganizationMember
-from app.models.service import Service, ServiceStatus, ServiceStatusHistory
-from app.models.organization import Organization
+from backend.app.core.database import get_db
+from backend.app.core.auth import get_current_user
+from backend.app.models.user import User, OrganizationMember
+from backend.app.models.service import Service, ServiceStatus, ServiceStatusHistory
+from backend.app.models.organization import Organization
 
 router = APIRouter()
 
