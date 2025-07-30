@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Full-stack status page application",
   "scripts": {
-    "build": "cd backend && npm run build",
+    "build": "cd frontend && npm install && npm run build && mkdir -p ../backend/static && cp -r out/* ../backend/static/",
     "postinstall": "npm run build"
   },
   "engines": {
