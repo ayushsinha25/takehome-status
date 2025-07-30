@@ -1,0 +1,165 @@
+# === SECURITY & SECRETS ===
+# Environment variables (protect actual env files)
+.env
+.env.local
+.env.development
+.env.production
+.env.staging
+# Allow template files
+!.env.example
+!.env.template
+!**/.env.example
+!**/.env.template
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Secret keys and credentials
+secrets/
+credentials/
+config/secrets/
+
+# === PYTHON/BACKEND ===
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Virtual environments
+.env/
+.venv/
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# === FRONTEND ===
+# Dependencies
+node_modules/
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# Testing
+/coverage
+
+# Next.js
+/.next/
+/out/
+
+# Production
+/build
+
+# Misc
+.DS_Store
+*.pem
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Vercel
+.vercel
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# === DEPLOYMENT ===
+Procfile
+runtime.txt
+.dockerignore
+Dockerfile
+docker-compose.yml
+
+# === LOGS ===
+logs/
+*.log
+
+# === TEMPORARY FILES ===
+tmp/
+temp/
+.tmp/
+.temp/
+
+# === OS GENERATED ===
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# === BACKUP FILES ===
+*.backup
+*.bak
+*.old
+*.orig
+
+# === LOCAL DEVELOPMENT ===
+# Local batch scripts (recreate as needed)
+start-backend.bat
+start-frontend.bat
+run-*.bat
+setup-*.bat
+
+# Temporary helper scripts
+create_env_file.py
+*_helper.py
+*_temp.py 
