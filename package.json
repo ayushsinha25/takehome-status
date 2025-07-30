@@ -8,6 +8,7 @@
   },
   "engines": {
     "node": "18.x", 
-    "npm": "9.x"
+    "npm": "9.x",
+    "python": "3.12.x"
   }
 }
