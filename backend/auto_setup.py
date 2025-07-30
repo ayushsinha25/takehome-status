@@ -9,12 +9,12 @@ import psycopg2
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 from sqlalchemy.orm import Session
 
-# Load environment variables from .env file
+# Load environment variables from .env file (local) or environment (Heroku)
 from decouple import config
 
-# Check if .env file exists and has required variables
-if not os.path.exists('.env'):
-    print("❌ .env file not found!")
+# Check if we're running on Heroku (has DATABASE_URL) or locally (needs .env)
+if not os.environ.get('DATABASE_URL') and not os.path.exists('.env'):
+    print("❌ .env file not found and no DATABASE_URL environment variable!")
     print("💡 Please create .env file from env.template:")
     print("   cp env.template .env")
     print("   # Then edit .env with your actual PostgreSQL credentials")
@@ -28,44 +28,66 @@ from app.models.organization import Organization
 def create_database():
     """Create PostgreSQL database if it doesn't exist"""
     try:
-        # Get connection details from environment variables
-        db_name = config("DB_NAME", default="status_page_db")
-        username = config("DB_USER", default="postgres")
-        password = config("DB_PASSWORD", default="")
-        host = config("DB_HOST", default="localhost")
-        port = config("DB_PORT", default="5432")
+        # Check if we have DATABASE_URL (Heroku) or individual config vars (local)
+        database_url = os.environ.get('DATABASE_URL')
         
-        if not password:
-            print("❌ Database password not found in environment!")
-            print("💡 Please set DB_PASSWORD in your .env file")
-            return False
-        
-        print(f"🔗 Connecting to PostgreSQL server...")
-        
-        # Connect to PostgreSQL server (to postgres database)
-        conn = psycopg2.connect(
-            host=host,
-            port=port,
-            database='postgres',  # Connect to default postgres database
-            user=username,
-            password=password
-        )
-        conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
-        cursor = conn.cursor()
-        
-        # Check if database exists
-        cursor.execute("SELECT 1 FROM pg_database WHERE datname = %s", (db_name,))
-        exists = cursor.fetchone()
-        
-        if not exists:
-            cursor.execute(f"CREATE DATABASE {db_name}")
-            print(f"✅ Created database: {db_name}")
+        if database_url:
+            # On Heroku, use DATABASE_URL
+            print(f"🔗 Using Heroku DATABASE_URL...")
+            # Heroku PostgreSQL databases are already created, just verify connection
+            import urllib.parse
+            result = urllib.parse.urlparse(database_url)
+            
+            # Test connection to the actual database
+            conn = psycopg2.connect(
+                host=result.hostname,
+                port=result.port,
+                database=result.path[1:],  # Remove leading slash
+                user=result.username,
+                password=result.password
+            )
+            print(f"✅ Connected to Heroku PostgreSQL database")
+            conn.close()
+            return True
         else:
-            print(f"✅ Database already exists: {db_name}")
-        
-        cursor.close()
-        conn.close()
-        return True
+            # Local development - get connection details from environment variables
+            db_name = config("DB_NAME", default="status_page_db")
+            username = config("DB_USER", default="postgres")
+            password = config("DB_PASSWORD", default="")
+            host = config("DB_HOST", default="localhost")
+            port = config("DB_PORT", default="5432")
+            
+            if not password:
+                print("❌ Database password not found in environment!")
+                print("💡 Please set DB_PASSWORD in your .env file")
+                return False
+            
+            print(f"🔗 Connecting to PostgreSQL server...")
+            
+            # Connect to PostgreSQL server (to postgres database)
+            conn = psycopg2.connect(
+                host=host,
+                port=port,
+                database='postgres',  # Connect to default postgres database
+                user=username,
+                password=password
+            )
+            conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
+            cursor = conn.cursor()
+            
+            # Check if database exists
+            cursor.execute("SELECT 1 FROM pg_database WHERE datname = %s", (db_name,))
+            exists = cursor.fetchone()
+            
+            if not exists:
+                cursor.execute(f"CREATE DATABASE {db_name}")
+                print(f"✅ Created database: {db_name}")
+            else:
+                print(f"✅ Database already exists: {db_name}")
+            
+            cursor.close()
+            conn.close()
+            return True
         
     except Exception as e:
         print(f"❌ Failed to create database: {e}")
