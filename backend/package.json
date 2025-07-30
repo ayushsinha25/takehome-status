@@ -1,0 +1,13 @@
+{
+  "name": "status-page-backend-with-frontend",
+  "version": "1.0.0",
+  "description": "Backend with integrated frontend build",
+  "scripts": {
+    "build": "cd ../frontend && npm install && npm run build && mkdir -p ../backend/static && cp -r out/* ../backend/static/",
+    "postinstall": "npm run build"
+  },
+  "engines": {
+    "node": "18.x",
+    "npm": "9.x"
+  }
+}

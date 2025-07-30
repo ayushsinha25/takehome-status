@@ -1,0 +1,31 @@
+# FastAPI and related
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+python-multipart==0.0.6
+
+# Database
+sqlalchemy==2.0.23
+psycopg2-binary==2.9.9  # PostgreSQL adapter
+
+# Authentication
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+python-decouple==3.8
+
+# WebSocket
+websockets==12.0
+
+# Testing
+requests==2.31.0
+
+# Data validation (using compatible versions)
+pydantic==2.4.2
+pydantic-settings==2.0.3
+
+# HTTP client
+httpx==0.25.2
+
+# Development tools (optional)
+# pytest==7.4.3
+# black==23.11.0
+# isort==5.12.0

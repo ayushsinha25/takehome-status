@@ -1,7 +1,9 @@
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, FileResponse
+from fastapi.staticfiles import StaticFiles
 import uvicorn
+import os
 from contextlib import asynccontextmanager
 from typing import List
 
@@ -41,7 +43,13 @@ manager = ConnectionManager()
 # Include API routes
 app.include_router(api_router, prefix="/api/v1")
 
-@app.get("/")
+# Mount static files for frontend
+static_dir = os.path.join(os.path.dirname(__file__), "..", "static")
+if os.path.exists(static_dir):
+    app.mount("/static", StaticFiles(directory=static_dir), name="static")
+    app.mount("/", StaticFiles(directory=static_dir, html=True), name="frontend")
+
+@app.get("/api")
 async def root():
     return {"message": "Status Page API is running", "version": "1.0.0"}
 

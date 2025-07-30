@@ -1,0 +1,13 @@
+{
+  "name": "status-page-fullstack",
+  "version": "1.0.0",
+  "description": "Full-stack status page application",
+  "scripts": {
+    "build": "cd backend && npm run build",
+    "postinstall": "npm run build"
+  },
+  "engines": {
+    "node": "18.x", 
+    "npm": "9.x"
+  }
+}

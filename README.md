@@ -535,35 +535,37 @@ python init_db.py  # Create fresh database
 - Ensure backend CORS_ORIGINS includes frontend URL
 - Check that both servers are running on correct ports
 
-## 🚀 Local Development Setup
+## 🚀 Deployment & Setup
 
-### Prerequisites
-- **Python 3.8+** with pip
-- **Node.js 18+** with npm
-- **PostgreSQL 12+**
+### For Production (Heroku)
+Deploy the complete application (backend + frontend) as a single Heroku app. See deployment instructions below.
 
-### Quick Start
-1. **Clone and Setup Backend:**
+### For Local Development
+If you want to run locally for development:
+
+**Prerequisites:**
+- Python 3.8+ with pip
+- Node.js 18+ with npm  
+- PostgreSQL 12+
+
+**Setup:**
 ```bash
+# Backend (terminal 1)
 cd backend
 cp env.template .env
 # Edit .env with your PostgreSQL credentials
-
 pip install -r requirements.txt
 python auto_setup.py
 python start.py
-```
 
-2. **Setup Frontend (new terminal):**
-```bash
+# Frontend (terminal 2)
 cd frontend
 cp env.template .env.local
-
 npm install
 npm run dev
 ```
 
-3. **Access Application:**
+**Local URLs:**
 - Frontend: http://localhost:3000
 - Backend API: http://localhost:8000
 - API Docs: http://localhost:8000/docs
@@ -596,7 +598,7 @@ npm run dev
 #### ✅ **Modern Tech Stack**
 - **Frontend**: Next.js 15, TypeScript, Tailwind CSS, ShadCN UI, Recharts
 - **Backend**: FastAPI, SQLAlchemy, PostgreSQL, JWT Authentication
-- **Deployment**: Heroku (backend), Vercel (frontend)
+- **Deployment**: Single Heroku app (integrated backend + frontend)
 
 #### ✅ **Developer Experience**
 - Auto-generated API documentation with FastAPI
