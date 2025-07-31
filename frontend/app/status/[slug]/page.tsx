@@ -67,7 +67,7 @@ export default async function OrganizationStatusPage({ params }: StatusPageProps
               
               async function loadStatus() {
                 try {
-                  const response = await fetch(API_BASE_URL + '/api/v1/status/public/' + slug);
+                  const response = await fetch(API_BASE_URL + '/api/v1/status/' + slug);
                   const data = await response.json();
                   
                   if (response.ok) {

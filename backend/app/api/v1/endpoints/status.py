@@ -113,10 +113,12 @@ def calculate_uptime_percentage(services: List[Service], db: Session, days: int 
         for entry in history:
             # Add time in previous status
             if current_status == ServiceStatus.OPERATIONAL:
-                operational_time += (entry.created_at - last_change).total_seconds()
+                entry_time = entry.created_at.replace(tzinfo=None) if entry.created_at.tzinfo else entry.created_at
+                change_time = last_change.replace(tzinfo=None) if hasattr(last_change, 'tzinfo') and last_change.tzinfo else last_change
+                operational_time += (entry_time - change_time).total_seconds()
             
             current_status = entry.status
-            last_change = entry.created_at
+            last_change = entry.created_at.replace(tzinfo=None) if entry.created_at.tzinfo else entry.created_at
         
         # Add remaining time in current status
         if current_status == ServiceStatus.OPERATIONAL:
@@ -127,7 +129,7 @@ def calculate_uptime_percentage(services: List[Service], db: Session, days: int 
     
     return round(total_uptime / service_count, 2)
 
-@router.get("/public/{org_slug}")
+@router.get("/{org_slug}")
 async def get_public_status(org_slug: str, db: Session = Depends(get_db)):
     """Get public status page for an organization"""
     
@@ -253,7 +255,7 @@ async def get_public_status(org_slug: str, db: Session = Depends(get_db)):
         uptime_percentage=uptime_percentage
     )
 
-@router.get("/public/{org_slug}/history")
+@router.get("/{org_slug}/history")
 async def get_status_history(
     org_slug: str, 
     days: int = 30,
@@ -317,7 +319,7 @@ async def get_status_history(
     
     return history[::-1]  # Return chronological order
 
-@router.get("/public/{org_slug}/incidents")
+@router.get("/{org_slug}/incidents")
 async def get_public_incidents(
     org_slug: str,
     limit: int = 20,
@@ -379,7 +381,7 @@ async def get_public_incidents(
     
     return incident_responses
 
-@router.get("/public/{org_slug}/incidents/{incident_id}")
+@router.get("/{org_slug}/incidents/{incident_id}")
 async def get_public_incident(
     org_slug: str, 
     incident_id: int,
