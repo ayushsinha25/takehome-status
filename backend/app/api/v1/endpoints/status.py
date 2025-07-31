@@ -127,7 +127,7 @@ def calculate_uptime_percentage(services: List[Service], db: Session, days: int 
     
     return round(total_uptime / service_count, 2)
 
-@router.get("/{org_slug}")
+@router.get("/public/{org_slug}")
 async def get_public_status(org_slug: str, db: Session = Depends(get_db)):
     """Get public status page for an organization"""
     
@@ -253,7 +253,7 @@ async def get_public_status(org_slug: str, db: Session = Depends(get_db)):
         uptime_percentage=uptime_percentage
     )
 
-@router.get("/{org_slug}/history")
+@router.get("/public/{org_slug}/history")
 async def get_status_history(
     org_slug: str, 
     days: int = 30,
@@ -317,7 +317,7 @@ async def get_status_history(
     
     return history[::-1]  # Return chronological order
 
-@router.get("/{org_slug}/incidents")
+@router.get("/public/{org_slug}/incidents")
 async def get_public_incidents(
     org_slug: str,
     limit: int = 20,
@@ -379,7 +379,7 @@ async def get_public_incidents(
     
     return incident_responses
 
-@router.get("/{org_slug}/incidents/{incident_id}")
+@router.get("/public/{org_slug}/incidents/{incident_id}")
 async def get_public_incident(
     org_slug: str, 
     incident_id: int,
