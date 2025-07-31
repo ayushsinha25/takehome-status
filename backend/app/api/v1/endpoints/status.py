@@ -89,7 +89,7 @@ def calculate_uptime_percentage(services: List[Service], db: Session, days: int 
             continue
             
         # Get status history for the last N days
-        cutoff_date = datetime.utcnow() - timedelta(days=days)
+        cutoff_date = datetime.utcnow().replace(tzinfo=None) - timedelta(days=days)
         
         history = db.query(ServiceStatusHistory).filter(
             and_(
@@ -120,7 +120,7 @@ def calculate_uptime_percentage(services: List[Service], db: Session, days: int 
         
         # Add remaining time in current status
         if current_status == ServiceStatus.OPERATIONAL:
-            operational_time += (datetime.utcnow() - last_change).total_seconds()
+            operational_time += (datetime.utcnow().replace(tzinfo=None) - last_change).total_seconds()
         
         service_uptime = (operational_time / total_time) * 100
         total_uptime += min(service_uptime, 100.0)
@@ -162,7 +162,7 @@ async def get_public_status(org_slug: str, db: Session = Depends(get_db)):
     ).order_by(desc(Incident.created_at)).all()
     
     # Get recent resolved incidents (last 30 days)
-    thirty_days_ago = datetime.utcnow() - timedelta(days=30)
+    thirty_days_ago = datetime.utcnow().replace(tzinfo=None) - timedelta(days=30)
     recent_incidents = db.query(Incident).filter(
         and_(
             Incident.organization_id == organization.id,
@@ -286,7 +286,7 @@ async def get_status_history(
     # Generate daily status for the last N days
     history = []
     for i in range(days):
-        date = datetime.utcnow() - timedelta(days=i)
+        date = datetime.utcnow().replace(tzinfo=None) - timedelta(days=i)
         date_str = date.strftime("%Y-%m-%d")
         
         daily_services = []
