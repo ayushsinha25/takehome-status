@@ -14,10 +14,7 @@ A comprehensive status page application built with Next.js + ShadCN UI frontend 
 - **Tech Stack**: FastAPI, SQLAlchemy, PostgreSQL/SQLite, JWT Authentication
 - **Features**: RESTful API, multi-tenant architecture, uptime calculation, metrics API
 
-## 🚀 Quick Start (Direct System Setup - No Virtual Environments)
-
-### ⚠️ SECURITY FIRST
-**Before running locally, please read [SECURITY.md](SECURITY.md) to properly configure environment variables and protect sensitive information!**
+## 🚀 Local System Deployment
 
 ### Prerequisites
 - **Python 3.8+** with pip (for backend)
@@ -55,7 +52,7 @@ cp env.template .env.local
 # Navigate to backend directory  
 cd backend
 
-# Install Python dependencies globally
+# Install Python dependencies
 pip install fastapi uvicorn[standard] sqlalchemy psycopg2-binary python-jose[cryptography] passlib[bcrypt] python-decouple python-multipart
 
 # Set up PostgreSQL database and create organizations with admin accounts
@@ -77,7 +74,7 @@ python start.py
 # Navigate to frontend directory (in a new terminal)
 cd frontend
 
-# Install Node.js dependencies globally (no need for virtual environment)
+# Install Node.js dependencies
 npm install
 
 # Start the frontend development server
@@ -86,7 +83,7 @@ npm run dev
 
 ✅ **Frontend running on:** `http://localhost:3000`
 
-## 🔄 Daily Usage (No Virtual Environments)
+## 🔄 Daily Usage
 
 ### Option 1: Using Batch Scripts (Windows)
 Simply double-click these files:
@@ -145,261 +142,13 @@ npm run dev
 - **Password**: `admin123`
 - **Public Status URL**: `/status/retail-pro`
 
-## 🚀 Production Deployment
-
-### Deploy to Heroku
-
-#### Prerequisites
-- Heroku CLI installed (`https://devcenter.heroku.com/articles/heroku-cli`)
-- Heroku account created
-
-#### Backend Deployment (FastAPI)
-
-1. **Create Heroku app for backend**:
-```bash
-cd backend
-heroku create your-status-api
-```
-
-2. **Add environment variables**:
-```bash
-heroku config:set SECRET_KEY="your-super-secret-production-key"
-heroku config:set DATABASE_URL="postgresql://..."  # Heroku will provide this
-heroku config:set CORS_ORIGINS="https://your-frontend-url.vercel.app"
-```
-
-3. **Create Procfile**:
-```bash
-# Create backend/Procfile
-echo "web: uvicorn app.main:app --host 0.0.0.0 --port \$PORT" > Procfile
-```
-
-4. **Add PostgreSQL addon**:
-```bash
-heroku addons:create heroku-postgresql:mini
-```
-
-5. **Update requirements.txt for production**:
-```bash
-# Add to backend/requirements.txt
-gunicorn==21.2.0
-psycopg2-binary==2.9.9
-```
-
-6. **Deploy**:
-```bash
-git init
-git add .
-git commit -m "Initial backend deployment"
-heroku git:remote -a your-status-api
-git push heroku main
-```
-
-7. **Initialize database**:
-```bash
-heroku run python init_db.py
-```
-
-#### Frontend Deployment (Next.js)
-
-**Option 1: Deploy to Vercel (Recommended)**
-
-1. **Install Vercel CLI**:
-```bash
-npm i -g vercel
-```
-
-2. **Configure environment variables**:
-```bash
-# Create frontend/.env.local
-NEXT_PUBLIC_API_URL=https://your-status-api.herokuapp.com
-```
-
-3. **Deploy**:
-```bash
-cd frontend
-vercel --prod
-```
-
-**Option 2: Deploy to Heroku**
-
-1. **Create Heroku app for frontend**:
-```bash
-cd frontend
-heroku create your-status-frontend
-```
-
-2. **Add buildpack**:
-```bash
-heroku buildpacks:set heroku/nodejs
-```
-
-3. **Set environment variables**:
-```bash
-heroku config:set NEXT_PUBLIC_API_URL="https://your-status-api.herokuapp.com"
-```
-
-4. **Create package.json scripts** (if not exists):
-```json
-{
-  "scripts": {
-    "build": "next build",
-    "start": "next start -p $PORT"
-  }
-}
-```
-
-5. **Deploy**:
-```bash
-git init
-git add .
-git commit -m "Initial frontend deployment"
-heroku git:remote -a your-status-frontend
-git push heroku main
-```
-
-### Alternative Deployment Options
-
-#### Docker Deployment
-
-1. **Backend Dockerfile**:
-```dockerfile
-# backend/Dockerfile
-FROM python:3.11
-
-WORKDIR /app
-COPY requirements.txt .
-RUN pip install -r requirements.txt
-
-COPY . .
-EXPOSE 8000
-
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
-```
-
-2. **Frontend Dockerfile**:
-```dockerfile
-# frontend/Dockerfile
-FROM node:18-alpine
-
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci
-
-COPY . .
-RUN npm run build
-
-EXPOSE 3000
-CMD ["npm", "start"]
-```
-
-3. **Docker Compose**:
-```yaml
-# docker-compose.yml
-version: '3.8'
-services:
-  backend:
-    build: ./backend
-    ports:
-      - "8000:8000"
-    environment:
-      - DATABASE_URL=sqlite:///./status_page.db
-      - SECRET_KEY=your-secret-key
-    volumes:
-      - ./backend:/app
-
-  frontend:
-    build: ./frontend
-    ports:
-      - "3000:3000"
-    environment:
-      - NEXT_PUBLIC_API_URL=http://localhost:8000
-    depends_on:
-      - backend
-```
-
-Run with: `docker-compose up --build`
-
-## 📱 Key Features
-
-### ✅ Implemented Features
-- **🔐 User Authentication** - JWT-based auth with login/register
-- **🏢 Multi-tenant Organizations** - Each org has its own status page
-- **🔧 Service Management** - Complete CRUD operations for services
-- **🚨 Incident Management** - Create, update, resolve incidents
-- **📊 Dashboard Interface** - Admin interface for managing services
-- **🌍 Public Status Pages** - Customer-facing status pages
-- **📈 Status History** - Track service uptime and incidents
-- **⚡ Real-time Updates** - WebSocket infrastructure ready
-- **📱 Responsive Design** - Works on desktop, tablet, and mobile
-
-### 🎯 Status Page Features
-- **Overall System Status** - Calculated from all service statuses
-- **Service Status Indicators** - 5 status levels (Operational → Major Outage)
-- **Active Incidents** - Real-time incident updates and timeline
-- **Recent Incidents** - 30-day incident history
-- **Uptime Statistics** - Service availability percentages
-- **Organization Branding** - Custom organization information
-
-## 🔌 API Endpoints
-
-### Authentication ✅
-- `POST /api/v1/auth/register` - User registration with organization creation
-- `POST /api/v1/auth/login` - User login with JWT tokens
-- `POST /api/v1/auth/refresh` - Refresh access tokens
-- `GET /api/v1/auth/me` - Current user information
-- `POST /api/v1/auth/logout` - User logout
-
-### Services Management ✅
-- `GET /api/v1/services/` - List all services for organization
-- `POST /api/v1/services/` - Create new service
-- `GET /api/v1/services/{id}` - Get specific service details
-- `PUT /api/v1/services/{id}` - Update service information
-- `PATCH /api/v1/services/{id}/status` - Update service status only
-- `DELETE /api/v1/services/{id}` - Soft delete service
-- `GET /api/v1/services/{id}/history` - Get service status history
-
-### Incident Management ✅
-- `GET /api/v1/incidents/` - List incidents with filtering
-- `POST /api/v1/incidents/` - Create new incident
-- `GET /api/v1/incidents/{id}` - Get incident details
-- `PUT /api/v1/incidents/{id}` - Update incident
-- `POST /api/v1/incidents/{id}/updates` - Add incident update
-- `GET /api/v1/incidents/{id}/updates` - Get incident updates
-- `DELETE /api/v1/incidents/{id}` - Delete incident
-
-### Public Status Page ✅
-- `GET /api/v1/status/{org_slug}` - Complete public status page
-- `GET /api/v1/status/{org_slug}/history` - Status history (30 days)
-- `GET /api/v1/status/{org_slug}/incidents` - Public incidents list
-- `GET /api/v1/status/{org_slug}/incidents/{id}` - Specific public incident
-
-### WebSocket ✅
-- `WS /ws` - Real-time status updates and notifications
-
-## 🗄️ Database Schema
-
-### Core Models
-- **User** - Authentication and user management
-- **Organization** - Multi-tenant support with custom slugs
-- **Service** - Individual services with status tracking
-- **Incident** - Incident management with updates and timeline
-- **Maintenance** - Scheduled maintenance windows
-
-### Service Statuses
-- `operational` - All systems normal
-- `degraded_performance` - Reduced performance
-- `partial_outage` - Some functionality affected
-- `major_outage` - Significant service disruption
-- `maintenance` - Scheduled maintenance
-
 ## 🛠️ Development
 
 ### Backend Development
 ```bash
 cd backend
 
-# Install in development mode
+# Install dependencies
 pip install -r requirements.txt
 
 # Run with hot reload
@@ -448,7 +197,6 @@ CORS_ORIGINS=http://localhost:3000
 ```env
 # API Configuration
 NEXT_PUBLIC_API_URL=http://localhost:8000
-# For production: NEXT_PUBLIC_API_URL=https://your-api-domain.com
 ```
 
 ## 🧪 Testing
@@ -472,36 +220,6 @@ curl -X POST http://localhost:8000/api/v1/auth/login \
 # Test public status
 curl http://localhost:8000/api/v1/status/acme-corp
 ```
-
-### Frontend Testing
-```bash
-cd frontend
-npm run test  # If test scripts are added
-```
-
-## 📚 Tech Stack Details
-
-### Frontend Stack
-- **Next.js 15** - React framework with App Router
-- **TypeScript** - Type safety and better DX
-- **Tailwind CSS** - Utility-first styling
-- **ShadCN UI** - Modern, accessible components
-- **Axios** - HTTP client with interceptors
-- **React Context** - Authentication state management
-- **Lucide React** - Beautiful icons
-- **Sonner** - Toast notifications
-- **Date-fns** - Date utilities
-
-### Backend Stack
-- **FastAPI** - Modern Python web framework
-- **SQLAlchemy** - Python ORM with relationships
-- **SQLite/PostgreSQL** - Database options
-- **Pydantic** - Data validation and serialization
-- **JWT** - Secure authentication tokens
-- **WebSocket** - Real-time communication
-- **Python-JOSE** - JWT implementation
-- **Passlib** - Password hashing
-- **Uvicorn** - ASGI server
 
 ## 🚨 Troubleshooting
 
@@ -535,76 +253,50 @@ python init_db.py  # Create fresh database
 - Ensure backend CORS_ORIGINS includes frontend URL
 - Check that both servers are running on correct ports
 
-## 🚀 Deployment & Setup
+## 📱 Key Features
 
-### For Production (Heroku)
-Deploy the complete application (backend + frontend) as a single Heroku app. See deployment instructions below.
+### ✅ Implemented Features
+- **🔐 User Authentication** - JWT-based auth with login/register
+- **🏢 Multi-tenant Organizations** - Each org has its own status page
+- **🔧 Service Management** - Complete CRUD operations for services
+- **🚨 Incident Management** - Create, update, resolve incidents
+- **📊 Dashboard Interface** - Admin interface for managing services
+- **🌍 Public Status Pages** - Customer-facing status pages
+- **📈 Status History** - Track service uptime and incidents
+- **⚡ Real-time Updates** - WebSocket infrastructure ready
+- **📱 Responsive Design** - Works on desktop, tablet, and mobile
 
-### For Local Development
-If you want to run locally for development:
+### 🎯 Status Page Features
+- **Overall System Status** - Calculated from all service statuses
+- **Service Status Indicators** - 5 status levels (Operational → Major Outage)
+- **Active Incidents** - Real-time incident updates and timeline
+- **Recent Incidents** - 30-day incident history
+- **Uptime Statistics** - Service availability percentages
+- **Organization Branding** - Custom organization information
 
-**Prerequisites:**
-- Python 3.8+ with pip
-- Node.js 18+ with npm  
-- PostgreSQL 12+
+## 📚 Tech Stack Details
 
-**Setup:**
-```bash
-# Backend (terminal 1)
-cd backend
-cp env.template .env
-# Edit .env with your PostgreSQL credentials
-pip install -r requirements.txt
-python auto_setup.py
-python start.py
+### Frontend Stack
+- **Next.js 15** - React framework with App Router
+- **TypeScript** - Type safety and better DX
+- **Tailwind CSS** - Utility-first styling
+- **ShadCN UI** - Modern, accessible components
+- **Axios** - HTTP client with interceptors
+- **React Context** - Authentication state management
+- **Lucide React** - Beautiful icons
+- **Sonner** - Toast notifications
+- **Date-fns** - Date utilities
 
-# Frontend (terminal 2)
-cd frontend
-cp env.template .env.local
-npm install
-npm run dev
-```
-
-**Local URLs:**
-- Frontend: http://localhost:3000
-- Backend API: http://localhost:8000
-- API Docs: http://localhost:8000/docs
-
-### Demo Credentials
-- **Tech Corp**: `admin@tech-corp.com` / `admin123`
-- **Health Plus**: `admin@health-plus.com` / `admin123`  
-- **Retail Pro**: `admin@retail-pro.com` / `admin123`
-
----
-
-### 📊 Key Features
-
-#### ✅ **Multi-Tenant Architecture**
-- Organizations with isolated data and custom branding
-- Role-based access control with admin approval system
-- Team management with member invitation workflow
-
-#### ✅ **Real-Time Status Management**  
-- Live service status updates with color-coded indicators
-- **Uptime Metrics Dashboard** with interactive charts
-- Day-wise data for last 30 days, hour-wise for last 24 hours
-- Accurate uptime calculations based on service history
-
-#### ✅ **Incident Management**
-- Create, update, and resolve incidents with real-time notifications
-- Status updates with timestamps and detailed descriptions
-- Public incident timeline on status pages
-
-#### ✅ **Modern Tech Stack**
-- **Frontend**: Next.js 15, TypeScript, Tailwind CSS, ShadCN UI, Recharts
-- **Backend**: FastAPI, SQLAlchemy, PostgreSQL, JWT Authentication
-- **Deployment**: Single Heroku app (integrated backend + frontend)
-
-#### ✅ **Developer Experience**
-- Auto-generated API documentation with FastAPI
-- TypeScript for type safety across frontend
-- Responsive design for mobile and desktop
-- Easy local development setup
+### Backend Stack
+- **FastAPI** - Modern Python web framework
+- **SQLAlchemy** - Python ORM with relationships
+- **SQLite/PostgreSQL** - Database options
+- **Pydantic** - Data validation and serialization
+- **JWT** - Secure authentication tokens
+- **WebSocket** - Real-time communication
+- **Python-JOSE** - JWT implementation
+- **Passlib** - Password hashing
+- **Uvicorn** - ASGI server
 
 ## 🤝 Contributing
 
@@ -613,59 +305,3 @@ This is a technical assessment project demonstrating full-stack development capa
 ## 📄 License
 
 This project is created for a technical assessment and demonstration purposes.
-
----
-
-## 🎯 Assessment Criteria Coverage
-
-✅ **Code Quality** - Clean, organized, and commented code  
-✅ **Architecture** - Proper separation of concerns, scalable design  
-✅ **Frontend Skills** - Responsive design, modern React patterns, TypeScript  
-✅ **Backend Skills** - RESTful API, database integration, authentication  
-✅ **Problem-Solving** - Multi-tenant architecture, real-time updates, incident management  
-✅ **AI-First Development** - Built using modern AI tools and frameworks efficiently  
-
-## 🌟 Demo Information
-
-### 🔐 Demo Credentials (Local Development)
-
-**Tech Corp Admin:**
-- **Email**: `admin@tech-corp.com`
-- **Password**: `admin123`
-- **Organization**: Tech Corp
-- **Public Status**: `http://localhost:3000/status/tech-corp`
-
-**Health Plus Admin:**
-- **Email**: `admin@health-plus.com`
-- **Password**: `admin123`
-- **Organization**: Health Plus
-- **Public Status**: `http://localhost:3000/status/health-plus`
-
-**Retail Pro Admin:**
-- **Email**: `admin@retail-pro.com`
-- **Password**: `admin123`
-- **Organization**: Retail Pro
-- **Public Status**: `http://localhost:3000/status/retail-pro`
-
-### 🏢 Sample Organizations
-
-Each organization includes:
-- **Services**: Website, API, Database, CDN with different status levels
-- **Admin Dashboard**: Full CRUD operations for services and incidents
-- **Team Management**: Approval system for new member requests
-- **Public Status Page**: Clean, responsive interface for end users
-- **Real-time Updates**: WebSocket integration for live status changes
-
----
-
-## 🎯 Assessment Criteria Met
-
-✅ **Full-Stack Development** - Complete Next.js + FastAPI application  
-✅ **Database Design** - PostgreSQL with proper relationships and multi-tenancy  
-✅ **Authentication** - JWT-based secure authentication system  
-✅ **Real-Time Features** - Live status updates and metrics  
-✅ **Modern UI/UX** - Responsive ShadCN UI with TypeScript  
-✅ **Deployment Ready** - Configured for Heroku + Vercel deployment  
-✅ **Documentation** - Comprehensive setup and deployment guide  
-
-The application demonstrates enterprise-level architecture patterns while maintaining simplicity and ease of deployment for effective evaluation and demonstration. 
