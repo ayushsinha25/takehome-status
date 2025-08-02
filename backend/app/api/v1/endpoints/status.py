@@ -5,11 +5,11 @@ from typing import List, Optional
 from pydantic import BaseModel
 from datetime import datetime, timedelta
 
-from backend.app.core.database import get_db
-from backend.app.models.organization import Organization
-from backend.app.models.service import Service, ServiceStatus, ServiceStatusHistory
-from backend.app.models.incident import Incident, IncidentStatus, IncidentSeverity, IncidentUpdate
-from backend.app.models.user import User
+from app.core.database import get_db
+from app.models.organization import Organization
+from app.models.service import Service, ServiceStatus, ServiceStatusHistory
+from app.models.incident import Incident, IncidentStatus, IncidentSeverity, IncidentUpdate
+from app.models.user import User
 
 router = APIRouter()
 

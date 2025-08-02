@@ -5,8 +5,8 @@ from sqlalchemy.orm import Session
 from pydantic import BaseModel, EmailStr
 from typing import Optional
 
-from backend.app.core.database import get_db
-from backend.app.core.auth import (
+from app.core.database import get_db
+from app.core.auth import (
     authenticate_user, 
     create_access_token, 
     create_refresh_token,
@@ -14,9 +14,9 @@ from backend.app.core.auth import (
     verify_token,
     get_current_user
 )
-from backend.app.models.user import User
-from backend.app.models.organization import Organization
-from backend.app.models.user import OrganizationMember, UserRole, MembershipStatus
+from app.models.user import User
+from app.models.organization import Organization
+from app.models.user import OrganizationMember, UserRole, MembershipStatus
 
 router = APIRouter()
 

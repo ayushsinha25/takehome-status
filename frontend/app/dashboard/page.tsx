@@ -77,27 +77,49 @@ export default function DashboardPage() {
   const currentOrganization = user?.organizations?.[0];
 
   useEffect(() => {
-    // Only load data if user is authenticated
-    if (user) {
-      loadDashboardData();
+    // Only load data if user is authenticated and token is available
+    if (user && localStorage.getItem('access_token')) {
+      // Add a small delay to ensure token is properly set in API instance
+      const timer = setTimeout(() => {
+        loadDashboardData();
+      }, 100);
+      return () => clearTimeout(timer);
     }
   }, [user]); // Depend on user being loaded
 
   const loadDashboardData = async () => {
     try {
       setLoading(true);
+      setError(''); // Clear any previous errors
       console.log('Loading dashboard data for user:', user?.email);
       console.log('Token available:', !!localStorage.getItem('access_token'));
       
-      const [servicesData, incidentsData] = await Promise.all([
-        servicesApi.getAll(),
-        incidentsApi.getAll()
-      ]);
+      // Load services and incidents separately for better error handling
+      let servicesData: Service[] = [];
+      let incidentsData: Incident[] = [];
+      
+      try {
+        console.log('Loading services...');
+        servicesData = await servicesApi.getAll();
+        console.log('Services loaded:', servicesData.length);
+      } catch (servicesError: any) {
+        console.error('Failed to load services:', servicesError);
+        // Continue loading incidents even if services fail
+      }
+      
+      try {
+        console.log('Loading incidents...');
+        incidentsData = await incidentsApi.getAll();
+        console.log('Incidents loaded:', incidentsData.length);
+      } catch (incidentsError: any) {
+        console.error('Failed to load incidents:', incidentsError);
+        // Continue even if incidents fail
+      }
       
       console.log('Dashboard data loaded successfully:', { services: servicesData.length, incidents: incidentsData.length });
       setServices(servicesData);
       setIncidents(incidentsData);
-      setError(''); // Clear any previous errors
+      
     } catch (err: any) {
       const errorMessage = err.response?.data?.detail || err.message || 'Failed to load dashboard data';
       setError(errorMessage);
@@ -106,7 +128,8 @@ export default function DashboardPage() {
         status: err.response?.status,
         data: err.response?.data,
         user: user?.email,
-        tokenAvailable: !!localStorage.getItem('access_token')
+        tokenAvailable: !!localStorage.getItem('access_token'),
+        fullError: err
       });
     } finally {
       setLoading(false);

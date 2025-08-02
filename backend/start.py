@@ -12,8 +12,8 @@ if __name__ == "__main__":
     
     # Check if .env file exists
     if not os.path.exists('.env'):
-        print("❌ .env file not found!")
-        print("💡 Please create a .env file from env.template and set your actual values")
+        print("[ERROR] .env file not found!")
+        print("Note: Please create a .env file from env.template and set your actual values")
         print("   cp env.template .env")
         print("   # Then edit .env with your actual database credentials and secret key")
         sys.exit(1)
@@ -22,12 +22,12 @@ if __name__ == "__main__":
     try:
         database_url = config('DATABASE_URL')
         secret_key = config('SECRET_KEY')
-        print("✅ Environment variables loaded successfully")
-        print(f"✅ Database URL configured")
-        print(f"✅ Secret key configured")
+        print("[OK] Environment variables loaded successfully")
+        print(f"[OK] Database URL configured")
+        print(f"[OK] Secret key configured")
     except Exception as e:
-        print(f"❌ Error loading environment variables: {e}")
-        print("💡 Please check your .env file format")
+        print(f"[ERROR] Error loading environment variables: {e}")
+        print("Note: Please check your .env file format")
         sys.exit(1)
     
     uvicorn.run(

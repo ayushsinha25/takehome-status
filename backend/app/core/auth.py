@@ -7,8 +7,8 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
 from decouple import config
 
-from backend.app.core.database import get_db
-from backend.app.models.user import User
+from app.core.database import get_db
+from app.models.user import User
 
 # Configuration
 SECRET_KEY = config("SECRET_KEY", default="your-secret-key-change-this-in-production")

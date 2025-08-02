@@ -11,34 +11,34 @@ from datetime import datetime, timedelta
 # Add the app directory to Python path
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from backend.app.core.database import engine, Base, SessionLocal
-from backend.app.models.user import User, OrganizationMember, UserRole
-from backend.app.models.organization import Organization
-from backend.app.models.service import Service, ServiceStatus, ServiceStatusHistory
-from backend.app.models.incident import Incident, IncidentStatus, IncidentSeverity, IncidentUpdate
-from backend.app.core.auth import get_password_hash
+from app.core.database import engine, Base, SessionLocal
+from app.models.user import User, OrganizationMember, UserRole
+from app.models.organization import Organization
+from app.models.service import Service, ServiceStatus, ServiceStatusHistory
+from app.models.incident import Incident, IncidentStatus, IncidentSeverity, IncidentUpdate
+from app.core.auth import get_password_hash
 
 def init_database():
     """Initialize database tables"""
     print("Creating database tables...")
     Base.metadata.create_all(bind=engine)
-    print("✅ Database tables created successfully!")
+    print("[OK] Database tables created successfully!")
 
 def create_sample_data():
     """Create sample data for testing"""
     db = SessionLocal()
     
     try:
-        print("\n🎯 Creating sample data...")
+        print("\n[NEXT] Creating sample data...")
         
         # Check if data already exists
         existing_user = db.query(User).first()
         if existing_user:
-            print("⚠️  Sample data already exists. Skipping...")
+            print("[WARN]  Sample data already exists. Skipping...")
             return
         
         # Create sample user
-        print("👤 Creating sample user...")
+        print("[USER] Creating sample user...")
         sample_user = User(
             email="admin@example.com",
             username="admin",
@@ -50,10 +50,10 @@ def create_sample_data():
         db.add(sample_user)
         db.commit()
         db.refresh(sample_user)
-        print(f"   ✅ User created: {sample_user.email}")
+        print(f"   [OK] User created: {sample_user.email}")
         
         # Create sample organization
-        print("🏢 Creating sample organization...")
+        print("[ORG] Creating sample organization...")
         sample_org = Organization(
             name="Acme Corp",
             slug="acme-corp",
@@ -65,10 +65,10 @@ def create_sample_data():
         db.add(sample_org)
         db.commit()
         db.refresh(sample_org)
-        print(f"   ✅ Organization created: {sample_org.name}")
+        print(f"   [OK] Organization created: {sample_org.name}")
         
         # Add user to organization as admin
-        print("👥 Adding user to organization...")
+        print("[MEMBER] Adding user to organization...")
         membership = OrganizationMember(
             user_id=sample_user.id,
             organization_id=sample_org.id,
@@ -76,10 +76,10 @@ def create_sample_data():
         )
         db.add(membership)
         db.commit()
-        print(f"   ✅ User added as admin to organization")
+        print(f"   [OK] User added as admin to organization")
         
         # Create sample services
-        print("🔧 Creating sample services...")
+        print("[SERVICE] Creating sample services...")
         services_data = [
             {
                 "name": "Website",
@@ -133,7 +133,7 @@ def create_sample_data():
         # Refresh services to get IDs
         for service in services:
             db.refresh(service)
-            print(f"   ✅ Service created: {service.name} ({service.status.value})")
+            print(f"   [OK] Service created: {service.name} ({service.status.value})")
             
             # Create initial status history
             status_history = ServiceStatusHistory(
@@ -147,7 +147,7 @@ def create_sample_data():
         db.commit()
         
         # Create sample incident
-        print("🚨 Creating sample incident...")
+        print("[INCIDENT] Creating sample incident...")
         sample_incident = Incident(
             title="Database Performance Issues",
             description="We are experiencing slower response times due to database performance issues. Our team is investigating and working on a resolution.",
@@ -166,10 +166,10 @@ def create_sample_data():
             sample_incident.affected_services.append(database_service)
             db.commit()
         
-        print(f"   ✅ Incident created: {sample_incident.title}")
+        print(f"   [OK] Incident created: {sample_incident.title}")
         
         # Create incident updates
-        print("📝 Creating incident updates...")
+        print("[UPDATE] Creating incident updates...")
         updates_data = [
             {
                 "title": "Investigating",
@@ -208,21 +208,21 @@ def create_sample_data():
                 sample_incident.status = update_data["status"]
         
         db.commit()
-        print(f"   ✅ Created {len(updates_data)} incident updates")
+        print(f"   [OK] Created {len(updates_data)} incident updates")
         
-        print("\n🎉 Sample data created successfully!")
-        print("\n📋 Sample Data Summary:")
-        print(f"   👤 User: {sample_user.email} (password: password123)")
-        print(f"   🏢 Organization: {sample_org.name} (slug: {sample_org.slug})")
-        print(f"   🔧 Services: {len(services)} services created")
-        print(f"   🚨 Incidents: 1 sample incident with updates")
-        print(f"\n🌐 Access URLs:")
-        print(f"   📊 API Documentation: http://localhost:8000/docs")
-        print(f"   🔐 Login endpoint: http://localhost:8000/api/v1/auth/login")
-        print(f"   📈 Public status: http://localhost:8000/api/v1/status/{sample_org.slug}")
+        print("\n[SUCCESS] Sample data created successfully!")
+        print("\n[INFO] Sample Data Summary:")
+        print(f"   [USER] User: {sample_user.email} (password: password123)")
+        print(f"   [ORG] Organization: {sample_org.name} (slug: {sample_org.slug})")
+        print(f"   [SERVICE] Services: {len(services)} services created")
+        print(f"   [INCIDENT] Incidents: 1 sample incident with updates")
+        print(f"\n[INFO] Access URLs:")
+        print(f"   [API] API Documentation: http://localhost:8000/docs")
+        print(f"   [LOGIN] Login endpoint: http://localhost:8000/api/v1/auth/login")
+        print(f"   [STATUS] Public status: http://localhost:8000/api/v1/status/{sample_org.slug}")
         
     except Exception as e:
-        print(f"❌ Error creating sample data: {e}")
+        print(f"[ERROR] Error creating sample data: {e}")
         db.rollback()
         raise
     finally:
@@ -230,7 +230,7 @@ def create_sample_data():
 
 def main():
     """Main function"""
-    print("🚀 Status Page Database Initialization")
+    print("[INIT] Status Page Database Initialization")
     print("=" * 50)
     
     try:
@@ -239,24 +239,24 @@ def main():
         
         # Ask user if they want sample data
         while True:
-            create_samples = input("\n💡 Create sample data for testing? (y/n): ").lower().strip()
+            create_samples = input("\n[TIP] Create sample data for testing? (y/n): ").lower().strip()
             if create_samples in ['y', 'yes']:
                 create_sample_data()
                 break
             elif create_samples in ['n', 'no']:
-                print("✅ Database initialized without sample data.")
+                print("[OK] Database initialized without sample data.")
                 break
             else:
                 print("Please enter 'y' or 'n'")
         
-        print("\n🎯 Next Steps:")
+        print("\n[NEXT] Next Steps:")
         print("1. Start the API server: python start.py")
         print("2. Open API docs: http://localhost:8000/docs")
         print("3. Test authentication with sample user (if created)")
         print("4. Connect your frontend to the API")
         
     except Exception as e:
-        print(f"\n❌ Initialization failed: {e}")
+        print(f"\n[ERROR] Initialization failed: {e}")
         sys.exit(1)
 
 if __name__ == "__main__":
